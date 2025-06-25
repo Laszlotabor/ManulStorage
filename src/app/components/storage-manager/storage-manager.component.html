@@ -1,0 +1,22 @@
+<div class="storage-manager">
+    <h2>Storage Manager</h2>
+  
+    <form (submit)="addStorage(); $event.preventDefault()">
+      <input
+        type="text"
+        [(ngModel)]="storageName"
+        name="storageName"
+        placeholder="Enter storage name"
+        required
+      />
+      <button type="submit">Add Storage</button>
+    </form>
+  
+    <ul class="storage-list">
+      <li *ngFor="let storage of storages$ | async">
+       
+        <a [routerLink]="['/storage', storage.id]">{{ storage.name }}</a>
+      </li>
+    </ul>
+  </div>
+  

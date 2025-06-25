@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="home" >manuLStorage</a>
+  
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- LEFT SIDE -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item" *ngIf="!isLoggedIn">
+            <a class="nav-link" routerLink="login">Login</a>
+          </li>
+          <li class="nav-item" *ngIf="!isLoggedIn">
+            <a class="nav-link" routerLink="register">Register</a>
+          </li>
+          <li class="nav-item" *ngIf="isLoggedIn">
+            <a class="nav-link" routerLink="home">Home</a>
+          </li>
+          <li class="nav-item" *ngIf="isLoggedIn">
+            <a class="nav-link" routerLink="storages">myStorages</a>
+          </li>
+        </ul>
+  
+        <!-- RIGHT SIDE -->
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item" *ngIf="isLoggedIn">
+            <button class="nav-link btn btn-link" (click)="logout()">Logout</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
