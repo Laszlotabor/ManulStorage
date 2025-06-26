@@ -31,17 +31,26 @@
         <h4 class="text-primary">📦 Items</h4>
         <div *ngIf="storage.items?.length; else noItems">
           <ul class="list-group">
-            <li *ngFor="let item of storage.items" class="list-group-item d-flex justify-content-between align-items-center">
-              <div>
-                <strong>{{ item.name }}</strong> ({{ item.quantity }})
-              </div>
-              <div class="btn-group btn-group-sm">
-                <button class="btn btn-outline-primary" (click)="promptOrder(item)">Add to Order</button>
-                <button class="btn btn-outline-secondary" (click)="topUpStock(item)">Add More</button>
-                <button class="btn btn-outline-danger" (click)="deleteItem(item)">Delete</button>
-
+            <li
+            *ngFor="let item of storage.items"
+            class="list-group-item d-flex justify-content-between align-items-center flex-wrap gap-2"
+          >
+            <div class="d-flex align-items-center flex-grow-1 gap-2">
+              <strong>{{ item.name }}</strong>
+              <span class="text-muted small">({{ item.quantity }})</span>
             </div>
-            </li>
+          
+            <div class="btn-group btn-group-sm flex-nowrap">
+              <button class="btn btn-outline-primary" (click)="promptOrder(item)">Order</button>
+              <button class="btn btn-outline-secondary" (click)="topUpStock(item)">Top Up</button>
+              <button class="btn btn-outline-danger" (click)="deleteItem(item)">Delete</button>
+            </div>
+          </li>
+          
+
+              
+              
+              
           </ul>
         </div>
         <ng-template #noItems><p class="text-muted">No items yet.</p></ng-template>

@@ -207,15 +207,19 @@ export class StorageDetailComponent implements OnInit {
     });
   }
   deleteItem(itemToDelete: StorageItem) {
-  if (!confirm(`Are you sure you want to delete "${itemToDelete.name}"?`)) return;
+    if (!confirm(`Are you sure you want to delete "${itemToDelete.name}"?`))
+      return;
 
-  const updatedItems = this.storageSnapshot!.items.filter(item => item.id !== itemToDelete.id);
-  const updatedOrders = this.storageSnapshot!.orders.filter(order => order.id !== itemToDelete.id);
+    const updatedItems = this.storageSnapshot!.items.filter(
+      (item) => item.id !== itemToDelete.id
+    );
+    const updatedOrders = this.storageSnapshot!.orders.filter(
+      (order) => order.id !== itemToDelete.id
+    );
 
-  this.baseService.updateStorage(this.storageSnapshot!.id, {
-    items: updatedItems,
-    orders: updatedOrders,
-  });
-}
-
+    this.baseService.updateStorage(this.storageSnapshot!.id, {
+      items: updatedItems,
+      orders: updatedOrders,
+    });
+  }
 }
