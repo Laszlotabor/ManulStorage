@@ -1,12 +1,12 @@
 <div *ngIf="storage$ | async as storage" class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
       <h2 class="mb-0">{{ storage.name }}</h2>
       <div class="d-flex gap-2">
         <a routerLink="/storages" class="btn btn-outline-secondary">
-          ← Back to My Storages
+          Back to My Storages
         </a>
-        
-        <button (click)="deleteStorage()" class="btn btn-danger">
+        <button (click)="deleteStorage()" class="btn btn-outline-danger">
           Delete Storage
         </button>
       </div>
@@ -15,53 +15,68 @@
     <!-- Add Item Form -->
     <form class="row g-3 mb-4" (submit)="addItem(storage); $event.preventDefault()">
       <div class="col-md-5">
-        <input type="text" [(ngModel)]="newItem.name" name="name" class="form-control" placeholder="Item name" required />
+        <input
+          type="text"
+          [(ngModel)]="newItem.name"
+          name="name"
+          class="form-control"
+          placeholder="Item name"
+          required
+        />
       </div>
       <div class="col-md-3">
-        <input type="number" [(ngModel)]="newItem.quantity" name="quantity" class="form-control" placeholder="Quantity" required />
+        <input
+          type="number"
+          [(ngModel)]="newItem.quantity"
+          name="quantity"
+          class="form-control"
+          placeholder="Quantity"
+          required
+        />
       </div>
       <div class="col-md-4">
-        <button type="submit" class="btn btn-success w-100">➕ Add Item</button>
+        <button type="submit" class="btn btn-outline-success w-100">
+          Add Item
+        </button>
       </div>
     </form>
   
     <div class="row">
       <!-- Items Column -->
-      <div class="col-md-6">
-        <h4 class="text-primary">📦 Items</h4>
-        <div *ngIf="storage.items?.length; else noItems">
+      <div class="col-md-6 mb-4">
+        <h4>Items</h4>
+        <ng-container *ngIf="storage.items?.length; else noItems">
           <ul class="list-group">
             <li
-            *ngFor="let item of storage.items"
-            class="list-group-item d-flex justify-content-between align-items-center flex-wrap gap-2"
-          >
-            <div class="d-flex align-items-center flex-grow-1 gap-2">
-              <strong>{{ item.name }}</strong>
-              <span class="text-muted small">({{ item.quantity }})</span>
-            </div>
-          
-            <div class="btn-group btn-group-sm flex-nowrap">
-              <button class="btn btn-outline-primary" (click)="promptOrder(item)">Order</button>
-              <button class="btn btn-outline-secondary" (click)="topUpStock(item)">Top Up</button>
-              <button class="btn btn-outline-danger" (click)="deleteItem(item)">Delete</button>
-            </div>
-          </li>
-          
-
-              
-              
-              
+              *ngFor="let item of storage.items"
+              class="list-group-item"
+            >
+              <div class="item-info">
+                <strong>{{ item.name }}</strong>
+                <span>({{ item.quantity }})</span>
+              </div>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-primary" (click)="promptOrder(item)">Order</button>
+                <button class="btn btn-outline-secondary" (click)="topUpStock(item)">Top Up</button>
+                <button class="btn btn-outline-danger" (click)="deleteItem(item)">Delete</button>
+              </div>
+            </li>
           </ul>
-        </div>
-        <ng-template #noItems><p class="text-muted">No items yet.</p></ng-template>
+        </ng-container>
+        <ng-template #noItems>
+          <p class="text-muted">No items yet.</p>
+        </ng-template>
       </div>
   
       <!-- Orders Column -->
-      <div class="col-md-6">
-        <h4 class="text-warning">orders</h4>
-        <div *ngIf="storage.orders?.length; else noOrders">
+      <div class="col-md-6 mb-4">
+        <h4 class="text-warning">Orders</h4>
+        <ng-container *ngIf="storage.orders?.length; else noOrders">
           <ul class="list-group">
-            <li *ngFor="let order of storage.orders" class="list-group-item d-flex justify-content-between align-items-center">
+            <li
+              *ngFor="let order of storage.orders"
+              class="list-group-item d-flex justify-content-between align-items-center"
+            >
               <div>
                 <strong>{{ order.name }}</strong> ({{ order.quantity }})
               </div>
@@ -71,8 +86,10 @@
               </div>
             </li>
           </ul>
-        </div>
-        <ng-template #noOrders><p class="text-muted">No orders yet.</p></ng-template>
+        </ng-container>
+        <ng-template #noOrders>
+          <p class="text-muted">No orders yet.</p>
+        </ng-template>
       </div>
     </div>
   </div>

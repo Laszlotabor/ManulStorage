@@ -1,18 +1,22 @@
+@use '../../../styles/variables' as *;
+
 .container {
     max-width: 960px;
     padding: 1rem;
 }
 
+// Headings
 h2 {
-    font-size: 2rem;
-    font-weight: bold;
+    font-size: 3rem;
     margin-bottom: 1rem;
+    color: $dark-color;
 }
 
 h4 {
     margin-bottom: 1rem;
-    border-bottom: 2px solid #e0e0e0;
+    border-bottom: 2px solid $secondary-color;
     padding-bottom: 0.5rem;
+    color: $primary-color;
 }
 
 // Form styling
@@ -40,11 +44,12 @@ form button {
 
         strong {
             font-weight: 500;
+            color: $primary-color;
         }
 
         span {
             font-size: 0.875rem;
-            color: #6c757d;
+            color: $secondary-color;
         }
     }
 
@@ -58,6 +63,26 @@ form button {
             white-space: nowrap;
             padding: 0.3rem 0.6rem;
             font-size: 0.75rem;
+
+            &.btn-outline-primary {
+                color: $primary-color;
+                border-color: $primary-color;
+            }
+
+            &.btn-outline-secondary {
+                color: $secondary-color;
+                border-color: $secondary-color;
+            }
+
+            &.btn-outline-danger {
+                color: $danger-color;
+                border-color: $danger-color;
+            }
+
+            &.btn-outline-warning {
+                color: $warning-color;
+                border-color: $warning-color;
+            }
         }
     }
 }
