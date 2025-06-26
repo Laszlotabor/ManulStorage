@@ -79,24 +79,27 @@ export class StorageDetailComponent implements OnInit {
       return;
     }
 
-    const orderItem: StorageItem = {
-      id: item.id,
-      name: item.name,
-      quantity: qty,
-    };
+    const orders = [...(this.storageSnapshot?.orders || [])];
+    const existingOrder = orders.find((o) => o.id === item.id);
 
-    const updatedOrders: StorageItem[] = [
-      ...(this.storageSnapshot?.orders || []),
-      orderItem,
-    ];
+    if (existingOrder) {
+      existingOrder.quantity += qty;
+    } else {
+      orders.push({
+        id: item.id,
+        name: item.name,
+        quantity: qty,
+      });
+    }
 
-    const updatedItems: StorageItem[] = (this.storageSnapshot?.items || []).map(
-      (i) => (i.id === item.id ? { ...i, quantity: i.quantity - qty } : i)
+    // Subtract from items
+    const updatedItems = this.storageSnapshot!.items.map((i) =>
+      i.id === item.id ? { ...i, quantity: i.quantity - qty } : i
     );
 
     this.baseService.updateStorage(this.storageSnapshot!.id, {
-      orders: updatedOrders,
       items: updatedItems,
+      orders,
     });
   }
 
@@ -141,37 +144,29 @@ export class StorageDetailComponent implements OnInit {
   }
 
   deleteOrder(order: StorageItem) {
+    const orders = [...(this.storageSnapshot?.orders || [])];
+    const updatedOrders: StorageItem[] = [];
+
+    let removed = false;
+
+    for (const o of orders) {
+      if (!removed && o.id === order.id && o.quantity === order.quantity) {
+        removed = true; // skip this one
+      } else {
+        updatedOrders.push(o);
+      }
+    }
+
+    // Restore to items
     const updatedItems = this.storageSnapshot!.items.map((item) =>
       item.id === order.id
         ? { ...item, quantity: item.quantity + order.quantity }
         : item
     );
 
-    const updatedOrders = this.storageSnapshot!.orders.filter(
-      (o) => o.id !== order.id
-    );
-
     this.baseService.updateStorage(this.storageSnapshot!.id, {
       items: updatedItems,
       orders: updatedOrders,
-    });
-  }
-
-  topUpStock(item: StorageItem) {
-    const qtyStr = prompt(`How much more to add to "${item.name}"?`);
-    const qty = Number(qtyStr);
-
-    if (!qty || qty <= 0) {
-      alert('Invalid quantity');
-      return;
-    }
-
-    const updatedItems = this.storageSnapshot!.items.map((i) =>
-      i.id === item.id ? { ...i, quantity: i.quantity + qty } : i
-    );
-
-    this.baseService.updateStorage(this.storageSnapshot!.id, {
-      items: updatedItems,
     });
   }
 
@@ -192,6 +187,23 @@ export class StorageDetailComponent implements OnInit {
     this.baseService.deleteStorage(this.storageSnapshot!.id).then(() => {
       alert('Storage deleted.');
       this.router.navigate(['/storages']);
+    });
+  }
+  topUpStock(item: StorageItem) {
+    const qtyStr = prompt(`How much more to add to "${item.name}"?`);
+    const qty = Number(qtyStr);
+
+    if (!qty || qty <= 0) {
+      alert('Invalid quantity');
+      return;
+    }
+
+    const updatedItems = this.storageSnapshot!.items.map((i) =>
+      i.id === item.id ? { ...i, quantity: i.quantity + qty } : i
+    );
+
+    this.baseService.updateStorage(this.storageSnapshot!.id, {
+      items: updatedItems,
     });
   }
 }
