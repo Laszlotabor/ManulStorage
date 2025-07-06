@@ -208,18 +208,18 @@ export class StorageDetailComponent implements OnInit {
   }
   deleteItem(item: StorageItem) {
     if (!this.storageSnapshot) return;
-  
-    // Remove item from items list
-    const updatedItems = this.storageSnapshot.items.filter(i => i.id !== item.id);
-  
-    // Also remove any related orders safely
-    const existingOrders = this.storageSnapshot.orders || [];
-    const updatedOrders = existingOrders.filter(order => order.id !== item.id);
-  
+
+    const updatedItems = (this.storageSnapshot.items || []).filter(
+      (i) => i.id !== item.id
+    );
+
+    const updatedOrders = (this.storageSnapshot.orders || []).filter(
+      (o) => o.id !== item.id
+    );
+
     this.baseService.updateStorage(this.storageSnapshot.id, {
       items: updatedItems,
       orders: updatedOrders,
     });
   }
-  
 }
